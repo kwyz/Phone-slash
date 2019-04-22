@@ -1,0 +1,30 @@
+.backgound{
+    background-repeat: repeat;
+    color: #fff;
+    text-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-image: url('../../assets/arena/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+}
+.backgound-play{
+    -ms-flex-align: center;
+    align-items: center;
+    background-image: url('../../assets/arena/playBackground.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+}
+.adaptive-image{
+    max-width: 100%;
+    display:block; 
+    height: auto;
+}
+.list-group{
+    max-height: 100px;
+    overflow:scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}

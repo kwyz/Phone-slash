@@ -1,0 +1,158 @@
+{
+    "players": {
+        "player": {
+            "name": "Player",
+            "hp": 100
+        },
+        "enemy": {
+            "name": "Enemy",
+            "hp": 100
+        }
+    },
+    "activity": [
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": true,
+            "damage": 20
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": false,
+            "damage": 20
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": true,
+            "damage": 0
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": true,
+            "damage": 20
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": false,
+            "damage": 20
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": true,
+            "damage": 0
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": true,
+            "damage": 0
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": false,
+            "damage": 10
+        },
+        {
+            "player": "player",
+            "action": "hit",
+            "lucky": true,
+            "damage": 20
+        },
+        {
+            "player": "player",
+            "action": "defence",
+            "lucky": false,
+            "damage": 20
+        }
+    ],
+    "results": [
+        {
+            "player": "enemy",
+            "result": "Win",
+            "expirience": "+6XP"
+        },
+        {
+            "player": "player",
+            "result": "Lose",
+            "expirience": "+1XP"
+        }
+    ]
+}

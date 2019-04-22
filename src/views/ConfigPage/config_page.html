@@ -1,0 +1,19 @@
+<div class="backgound h-100 flex-grow-1">
+    <div class="d-flex justify-content-center row pt-5 col-12 pb-3">
+        <div class="container">
+            <h3 class="text-uppercase">
+                {{getCharacterName}}
+            </h3>
+        </div>
+        <div class="container mt-5">
+            <div class="col">
+                <div class="container-fluid mt-5 ">
+                    <img src="@/assets\interface\buttons\left.png" style="height: 50px;" @click="prevCharacter()">
+                    <img :src="getCharacterUrl" style="height: 124px;" >
+                    <img src="@/assets\interface\buttons\right.png" style="height: 50px;" @click="nextCharacter()">
+                </div>
+                <img src="@/assets/interface/tiles/tile.png" style="margin-top: -20px;">
+            </div>
+        </div>
+    </div>
+</div>

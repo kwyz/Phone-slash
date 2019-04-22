@@ -1,0 +1,52 @@
+<div class="backgound h-100 flex-grow-1">
+        <div class="d-flex justify-content-center col pt-2 col-12 pb-1">
+            <div class="container">
+                <div class="container-fluid mt-5 text-left d-flex justify-content-between">
+                    <div class="container mb-5 ml-3">
+                        <img src="@/assets/interface/HP/health_bar/health_bar_decoration.png" class="ml-2 heal_bar_main player">
+                        <img id="sechealthPlayer" src="@/assets/interface/HP/health_bar/health_bar.png" class=" ml-5 heal_bar_seccondary player">
+                        <div class="text-block-player">
+                            Your HP
+                        </div>
+                    </div>
+                    <div class="container-fluid row">
+                      <img src="@/assets/interface/HP/health_bar/health_bar_decoration.png" class="ml-2 heal_bar_main enemy"> 
+                      <img id="sechealthEnemy" src="@/assets/interface/HP/health_bar/health_bar.png" class="heal_bar_seccondary enemy">
+                      <div class="text-block-enemy">
+                           Enemy HP
+                        </div>
+                    </div>
+                </div>
+                <div class="container row justify-content-end mt-5">
+                    <div class="col mt-4 d-inline-flex">
+                        <div class="container-fluid d-flex justify-contetnt-start">
+                            <div class="text-block-player-status">
+                                {{getPlayerStatus}}
+                            </div>
+                            <div class="row ml-2">
+                                <img :src="getCharacterAvatar" style="height: 124px;" class="ml-5" >
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="text-block-result-status h4">
+                                {{gameStatus}}
+                            </div>
+                        </div>
+                        <div class="container-fluid d-flex justify-contetnt-end">
+                            <div class="text-block-enemy-status">
+                                {{getEnemyStatus}}
+                            </div>
+                            <div class="row ml-5">
+                                <img :src="getRandomCharacter" style="height: 124px;" class="ml-5 enemy" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container row justify-content-end">
+                            <div class="col d-inline-flex justify-content-center">
+                            <img src="@/assets/interface/tiles/tile.png" style="margin-top: -20px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

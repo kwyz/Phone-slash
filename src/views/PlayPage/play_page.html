@@ -1,0 +1,38 @@
+<div class="h-100 flex-grow-1 backgound-game">
+    <div class="container">
+        <div class="row">
+            <div class="offset-1 col-10">
+                <div class="col mt-3">
+                    <div class="d-flex justify-content-between">
+                        <img src="@/assets/interface/HP/health_bar/health_bar_decoration.png" class="ml-4"
+                            height="35px;">
+                        <img src="@/assets/interface/HP/health_bar/health_bar_decoration.png" class="enemy mr-5"
+                            height="35px;">
+                    </div>
+                </div>
+                <div class="col mt-2">
+                    <div class="d-flex justify-content-between pt-4" v-if="!gameStart">
+                        <span class="mr-5 pr-3 text-warning ml-5 pt-3 pb-2">{{playerStatus}}</span>
+                        <span class="mr-5 pr-3 text-warning pt-2 pb-2">{{enemyStatus}}</span>
+                    </div>
+                    <div v-else class="d-flex justify-content-between pt-4">
+                        <span class="mr-5 pr-3 text-warning ml-5">{{playerStatus}}</span>
+                        <span class="mr-5 pr-3 text-warning">{{enemyStatus}}</span>
+                    </div>
+                </div>
+                <div class="col pb-4">
+                    <div class="d-flex justify-content-between mt-1">
+                        <img :src="getCharacterAvatar" height="100px;">
+                        <img :src="getRandomCharacter" height="100px;" class="enemy mr-3">
+                    </div>
+                </div>
+                <div class="col pb-1 pt-1">
+                    <div class="d-flex flex-wrap mr-4">
+                        <div class="text-warning h4 pb-3 col-12">{{gameStatus}}</div>
+                        <div class="text-warning h4 col-12">{{experienceEarned}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
