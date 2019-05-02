@@ -11,18 +11,28 @@
     width: 100%;
 }
 .hp_bar{
-    height: 45px;
-    position: absolute;
+    width:100px;
+    border:1px solid #000;
+    background-color: #991111;
+    margin-top: 5px;
 }
-.hp_sec_bar{
-    height: 45px;
+
+#playerHP{
     position: absolute;
+ transition: width 2s;
+  height:15px;
+  margin-top: 7px;
+  left: 51px;
+
+  width:100px;
+  background: #991111;
 }
-.hp_text{
-    margin-top: 10px;
-    margin-left: 60px;
+#enemyHP{
+    transition: width 2s;
+    height:15px;
     position: absolute;
-}
-#sechealthPlayer{
-    margin-left: 0.9em;
+    margin-top: 6px;
+    width: 100px;
+    right:80px;
+    background: #991111;
 }

@@ -4,10 +4,10 @@
             <div class="offset-1 col-10">
                 <div class="col mt-3">
                     <div class="d-flex justify-content-between">
-                        <img src="@/assets/interface/HP/health_bar/health_bar_decoration.png" class="ml-4"
-                            height="35px;">
-                        <img src="@/assets/interface/HP/health_bar/health_bar_decoration.png" class="enemy mr-5"
-                            height="35px;">
+                        <img src="@/assets/interface/HP/basic/heart.png" class="ml-4" height="35px;" style="z-index:12;" id="heartPlayer" >
+                        <div class=" mr-2 " id="playerHP"></div>
+                        <div class=" ml-5 " id="enemyHP"></div>
+                        <img src="@/assets/interface/HP/basic/heart.png" class="mr-5" height="35px;"  style="z-index:12;"  id="heartEnemy">
                     </div>
                 </div>
                 <div class="col mt-2">
@@ -20,16 +20,20 @@
                         <span class="mr-5 pr-3 text-warning">{{enemyStatus}}</span>
                     </div>
                 </div>
-                <div class="col pb-4">
-                    <div class="d-flex justify-content-between mt-1">
+                <div class="col pb-2">
+                    <div class="d-flex justify-content-between">
                         <img :src="getCharacterAvatar" height="100px;">
                         <img :src="getRandomCharacter" height="100px;" class="enemy mr-3">
                     </div>
                 </div>
-                <div class="col pb-1 pt-1">
+                <div class="col pb-1" v-if="!gameStart">
                     <div class="d-flex flex-wrap mr-4">
-                        <div class="text-warning h4 pb-3 col-12">{{gameStatus}}</div>
+                        <div class="text-warning h4 col-12">{{gameStatus}}</div>
                         <div class="text-warning h4 col-12">{{experienceEarned}}</div>
+                        <div class="text-warning h4 offset-1 col-10 d-flex justify-content-between">
+                            <img src="@/assets/interface/buttons/close.png" style="height: 50px;" @click="cancelGame()">
+                            <img src="@/assets/interface/buttons/reload.png" style="height: 50px;" @click="reloadGame()">
+                        </div>
                     </div>
                 </div>
             </div>

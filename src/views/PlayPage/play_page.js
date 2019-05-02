@@ -19,12 +19,11 @@ export default {
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 width: "100%"
-            }
+            },
 
         }
     },
     created() {
-        this.gameStart = true
         if (localStorage['characterNumber'] === undefined) {
             this.$router.push({ path: '/config' })
         } else {
@@ -67,6 +66,7 @@ export default {
             var enemyHealth = tempData.players.enemy.hp
             let self = this
             var aIndex = 0
+            this.gameStart = true
             this.Interval = setInterval(function () {
                 if (aIndex < gameActivities.length) {
                     let activity = gameActivities[aIndex]
@@ -76,9 +76,12 @@ export default {
                     } else if (activity.action === 'hit' && activity.lucky) {
                         enemyHealth = self.calcEnemyHealth(enemyHealth, activity.damage)
                     }
+
                     aIndex++
                 } else {
                     if (enemyHealth <= 0 || health <= 0) {
+                        if(health <=0) document.getElementById("heartPlayer").setAttribute("src", require("@/assets/interface/HP/basic/background.png"))
+                        if(enemyHealth<=0) document.getElementById("heartEnemy").setAttribute("src", "@/assets/interface/HP/basic/background.png")
                         clearInterval(self.Interval)
                         self.gameStatus = "You " + tempData.results[1].result
                         self.experienceEarned = "You earn " + tempData.results[1].expirience
@@ -95,17 +98,19 @@ export default {
 
         },
         resetHealth() {
-            document.getElementById('sechealthPlayer').style = "clip: rect(0, 100px, 200px, 0);"
-            document.getElementById('sechealthEnemy').style = "clip: rect(0, 100px, 200px, 0);"
+            document.getElementById('playerHP').style.width ="100px"
+            document.getElementById('enemyHP').style.width = "100px"
+            document.getElementById("heartPlayer").setAttribute("src", require("@/assets/interface/HP/basic/heart.png"))
+            document.getElementById("heartEnemy").setAttribute("src", require("@/assets/interface/HP/basic/heart.png"))
         },
         calcPlayerHealth(health, damage) {
             let remainhealth = health - damage
-            // document.getElementById('sechealthPlayer').style = "clip: rect(0, " + (remainhealth * 1.2) + "px,200px, 0);"
+            document.getElementById('playerHP').style.width = remainhealth +"px"
             return remainhealth
         },
         calcEnemyHealth(health, damage) {
             let remainhealth = health - damage
-            // document.getElementById('sechealthEnemy').style = "clip: rect(0, " + (remainhealth * 1.2) + "px,200px, 0);"
+            document.getElementById('enemyHP').style.width = remainhealth +"px"
             return remainhealth
         },
         setPlayersStatus(activity) {
@@ -122,6 +127,35 @@ export default {
                 this.enemyStatus = "Defence"
                 this.playerStatus = "Miss"
             }
+        },
+        cancelState(){
+            this.figthResults = [];
+            this.Interval= '';
+            this.health = 100;
+            this.enemyStatus = "";
+            this.playerStatus = "";
+            this.Interval = {};
+            this.gameStatus = "";
+            this.experienceEarned = "";
+            this.gameStart = false;
+            this.style = {
+                alignItems: "center",
+                backgroundImage: require('../../assets/arena/playBackground.png'),
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                width: "100%"
+            }
+        },
+        cancelGame() {
+            this.cancelState()
+            this.$router.push({path:"/"})
+        },
+        async reloadGame(){
+            this.resetHealth()
+            setTimeout(()=>{
+                this.cancelState();
+                this.processData();
+            },2000)
         }
     }
 }
