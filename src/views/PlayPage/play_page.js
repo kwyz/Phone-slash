@@ -1,5 +1,8 @@
 import tempData from '@/assets/tempData.json'
-
+import { GET } from "@/api/index.js"
+import { POST } from '../../api';
+var Timer = {}
+var takenDamage = 0 ;
 export default {
     name: "play",
     data() {
@@ -20,21 +23,20 @@ export default {
                 backgroundRepeat: "no-repeat",
                 width: "100%"
             },
+            enemyExist: false,
 
         }
     },
     created() {
-        if (localStorage['characterNumber'] === undefined) {
-            this.$router.push({ path: '/config' })
-        } else {
-
-            // document.getElementById("background-game").style = "background-image: url('../../assets/arena/playBackground.png');"
-            this.processData()
-
-        }
+        this.getCharConfig();
+        this.changeStatus()
     },
     beforeDestroy() {
+        window.clearTimeout(Timer)
         window.clearInterval(this.Interval)
+        POST("LeaveGame", {
+            id: window.device.serial
+        })
     },
     updated() {
         if (this.health <= 0) {
@@ -60,10 +62,11 @@ export default {
         }
     },
     methods: {
-        processData() {
-            const gameActivities = tempData.activity
-            var health = tempData.players.player.hp
-            var enemyHealth = tempData.players.enemy.hp
+        processData(data) {                      
+            console.log(data.Value)
+            const gameActivities = data.Value.activity
+            var health = data.Value.players.player.hp === 0 ? data.Value.players.enemy.hp : 100
+            var enemyHealth = data.Value.players.enemy.hp === 0 ? data.Value.players.enemy.hp : 100
             let self = this
             var aIndex = 0
             this.gameStart = true
@@ -76,7 +79,6 @@ export default {
                     } else if (activity.action === 'hit' && activity.lucky) {
                         enemyHealth = self.calcEnemyHealth(enemyHealth, activity.damage)
                     }
-
                     aIndex++
                 } else {
                     if (enemyHealth <= 0 || health <= 0) {
@@ -88,14 +90,10 @@ export default {
                         self.enemyStatus = ""
                         self.playerStatus = ""
                         self.gameStart = false
-
+                        console.log("Taken damage "+takenDamage)
                     }
-                    // setTimeout(function(){
-
-                    // },5000)
                 }
             }, 300)
-
         },
         resetHealth() {
             document.getElementById('playerHP').style.width ="100px"
@@ -104,10 +102,11 @@ export default {
             document.getElementById("heartEnemy").setAttribute("src", require("@/assets/interface/HP/basic/heart.png"))
         },
         calcPlayerHealth(health, damage) {
-            let remainhealth = health - damage
+            let remainhealth = (health - damage)
+            takenDamage +=damage
             document.getElementById('playerHP').style.width = remainhealth +"px"
             return remainhealth
-        },
+        }, 
         calcEnemyHealth(health, damage) {
             let remainhealth = health - damage
             document.getElementById('enemyHP').style.width = remainhealth +"px"
@@ -156,6 +155,67 @@ export default {
                 this.cancelState();
                 this.processData();
             },2000)
+        },
+        getCharConfig(){
+            const _this = this
+            setTimeout(async function(){
+                await navigator.geolocation.getCurrentPosition(pos=>{
+                    const GEO = {
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude
+                    }
+                    const IMEI = window.device.serial
+                    const preparedURL = "GetCharacter?id="+IMEI+"&longitude="+GEO.longitude+"&latitude="+GEO.latitude;
+                    let result = GET(preparedURL).then(success=>{
+                        _this.health = success.data.Health;
+                    }).catch(error=>{
+                        console.log(error)
+                    })
+                    return result;
+                })
+            },1000)
+        },
+        async changeStatus(){
+            const _this = this
+            await navigator.geolocation.getCurrentPosition(pos=>{
+                const GEO = {
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude
+                }
+                const IMEI = window.device.serial
+                const preparedURL = "ChangeStatus?id="+IMEI+"&status="+1+"&longitude="+GEO.longitude+"&latitude="+GEO.latitude;
+                let result = GET(preparedURL).then(success=>{
+                    _this.health = success.data.Health;
+                    _this.searchOponent();
+                }).catch(error=>{
+                    console.log(error)
+                })
+                return result;
+            })
+        },
+        async searchOponent(){
+            const _this = this
+            await navigator.geolocation.getCurrentPosition(pos=>{
+                const GEO = {
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude
+                }
+                const IMEI = window.device.serial
+                const SearchOpponent = "SearchOpponent?id="+IMEI+"&longitude="+GEO.longitude+"&latitude="+GEO.latitude;
+                GET(SearchOpponent).then(success=>{
+                    if(success.status !== 200){
+                        _this.enemyExist = false      
+                       Timer = setTimeout(()=>{
+                            _this.searchOponent()
+                        },2000)
+                    } else if(success.status === 200) {
+                        _this.enemyExist = true      
+                        Timer = setTimeout(()=>{
+                            _this.processData(success.data)
+                        },2000)        
+                    }   
+                })
+            })
         }
     }
 }

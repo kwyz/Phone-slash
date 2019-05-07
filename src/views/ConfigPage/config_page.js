@@ -1,3 +1,4 @@
+import {GET, POST} from "@/api/index.js"
 export default {
     name :"settings",
     data(){
@@ -13,15 +14,15 @@ export default {
             6: "Fire Golem",
         },
         characterConfig:[
-            {title:"Armor", value: 1},
-            {title:"Agility", value:1},
-            {title:"Critical", value: 1},
-            {title:"Health", value: 1},
-            {title:"Strength", value: 1},
+            {title:"Armor", value: 5},
+            {title:"Agility", value:10},
+            {title:"CriticalPower", value: 6},
+            {title:"Strength", value: 10},
    
         ],
         isSelectedCharacter: false,
-        isSearchForCharacter: false
+        availablePoints: 0,
+        charData: {}
     }
     },
     computed:{
@@ -35,24 +36,83 @@ export default {
     created(){
         this.isSelectedCharacter =  localStorage['characterNumber'] !== undefined
     },
+    mounted(){
+        this.isSelectedCharacter = Boolean(localStorage["characterExist"] !== undefined ? localStorage["characterExist"] : "true");
+        this.getCharConfig()
+    },
     methods: {
+        getCharConfig(){
+            const _this = this
+            setTimeout(async function(){
+                await navigator.geolocation.getCurrentPosition(pos=>{
+                    const GEO = {
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude
+                    }
+                    const IMEI = window.device.serial
+                    const preparedURL = "GetCharacter?id="+IMEI+"&longitude="+GEO.longitude+"&latitude="+GEO.latitude;
+                    let result = GET(preparedURL).then(success=>{
+                        _this.updateCharConfig(success.data);
+                    }).catch(error=>{
+                         _this.addNewChar();
+                    })
+                    return result;
+                })
+            },1000)
+        },
+        updateCharConfig(data){
+            this.characterConfig[0].value = data.Armor;
+            this.characterConfig[1].value = data.Agility;
+            this.characterConfig[2].value = data.CriticalPower;
+            this.characterConfig[3].value = data.Strength;
+            this.characterNr = data.Avatar;
+            this.availablePoints = data.Points;
+            this.charData = data;
+            localStorage['characterNumber'] =  this.characterNr
+        },
         nextCharacter(){
             this.characterNr === 6 ?  this.characterNr = 1 : this.characterNr++
-            this.isSearchForCharacter = true
         },
         prevCharacter(){
             this.characterNr === 1 ?  this.characterNr = 6 : this.characterNr--
-            this.isSearchForCharacter = true
-        },
-        saveSelectedCharacter(){
-            localStorage['characterNumber'] = this.characterNr
-            this.$router.push({path:"/"})
         },
         add(caracteristic){
             let index = this.characterConfig.findIndex(element => {
-               return  element.title == caracteristic.title
+               return element.title == caracteristic.title
             })
-           this.characterConfig[index].value = caracteristic.value + 1
+            if(this.availablePoints > 0){
+                this.characterConfig[index].value = caracteristic.value + 1
+                this.availablePoints--;
+            }
         },
+        saveSelectedCharacter(){
+            if(localStorage["characterExist"] !== undefined){
+                const exist = Boolean(localStorage["characterExist"])
+                exist === true ? this.updateChar() : this.addNewChar()
+            }
+        },
+        addNewChar(){
+            const charConfig = {
+                id: window.device.serial,
+                name: window.device.model,
+                avatar: this.characterNr
+            };
+            localStorage['characterNumber'] =  this.characterNr
+            POST("AddCharacter",charConfig)
+        },
+        updateChar(){
+            let charState = {};
+            let _this = this;
+            this.characterConfig.forEach(state=>{
+                charState[state.title] = state.value;
+            })
+            charState.SmartphoneID = window.device.serial;
+            charState.NickName = window.device.model;
+            charState.Avatar = this.characterNr;
+            charState.CharacterDetails = this.charData.CharacterDetails;
+            POST("UpdateCharacter", charState).then(success=>{
+                _this.$router.push({path: "/"})
+            })      
+        }
     }
 }

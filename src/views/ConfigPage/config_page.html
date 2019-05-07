@@ -12,22 +12,22 @@
                     <img :src="getCharacterUrl" style="height: 124px;" >
                     <img src="@/assets\interface\buttons\right.png" style="height: 50px;" @click="nextCharacter()">
                 </div>
-                <img src="@/assets/interface/buttons/yes.png" style="margin-top: -20px; height: 50px; margin-left: -30px;" v-if="isSearchForCharacter" @click="saveSelectedCharacter()">
+                <img src="@/assets/interface/buttons/yes.png" style="margin-top: -20px; height: 50px; margin-left: -30px;" @click="saveSelectedCharacter()">
                 <img src="@/assets/interface/tiles/tile.png" style="margin-top: -20px;">
             </div>
         </div>
     </div>
    <div class="d-flex justify-content-center row offset-1 col-11"  v-else>
     <div class="d-flex justify-content-center row pt-5 col-12">
-        <span class="text-warning h3"> Set-up your character</span>
+        <div class="text-warning h3 col-12"> Set-up your character</div>
+        <div class="text-warning h3 col-12"> Available points {{availablePoints}}</div>
     </div>
     <div class="d-flex justify-content-between row pt-5 col-12">
-        <div class="mt-2 row col-5 ml-3 pr-5" v-for="c in characterConfig">
+        <div class="mt-2 row col-5 ml-2 pr-2" v-for="c in characterConfig">
             <div class="col-12 row">
                 <img src="@/assets/interface/buttons/add.png" 
-                style=" height: 20px;"
-                class="mr-2" @click="add(c)">
-                <h5 class="mr-1 "> {{c.title}} </h5> 
+                style=" height: 20px;" @click="add(c)">
+                <h5 class="mr-1"> {{c.title}} </h5> 
                 <h5>[{{c.value}}] </h5>
             </div>
            </div>

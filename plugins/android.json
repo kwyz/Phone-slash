@@ -12,6 +12,12 @@
     },
     "cordova-plugin-screen-orientation": {
       "PACKAGE_NAME": "com.phone.slash"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.phone.slash"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.phone.slash"
     }
   },
   "dependent_plugins": {
